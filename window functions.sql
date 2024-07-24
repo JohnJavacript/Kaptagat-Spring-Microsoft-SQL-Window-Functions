@@ -48,7 +48,7 @@ SELECT TOP (1000) [Order Numer]
   FROM [Kaptagat Springs Sales Data].[dbo].['Kaptagat Springs Sales Datasets$']
 
 
--- This calculates the difference in total amount from the previous transaction.
+-- This provides the total and average sales amount for each customer
   SELECT TOP (1000) [Order Numer]
       ,[Quantity]
       ,[ Unit Price ]
@@ -61,5 +61,22 @@ SELECT TOP (1000) [Order Numer]
       ,[Customer Name]
       ,[Customer ID]
       ,[Transaction ID],
- [ Total Amount ] - LAG([ Total Amount ], 1, 0) OVER (ORDER BY [Transaction Date]) AS DifferenceFromPreviousTransaction
+ SUM([ Total Amount ]) OVER (PARTITION BY [Customer ID]) AS TotalSalesByCustomer,
+    AVG([ Total Amount ]) OVER (PARTITION BY [Customer ID]) AS AvgSalesByCustomer
+  FROM [Kaptagat Springs Sales Data].[dbo].['Kaptagat Springs Sales Datasets$']
+
+-- Difference from Previous Transaction Amount:
+  SELECT TOP (1000) [Order Numer]
+      ,[Quantity]
+      ,[ Unit Price ]
+      ,[ Total Amount ]
+      ,[Transaction Date]
+      ,[Shipping Status]
+      ,[Year of Transaction]
+      ,[Product Type]
+      ,[Product Code]
+      ,[Customer Name]
+      ,[Customer ID]
+      ,[Transaction ID],
+  [ Total Amount ] - LAG([ Total Amount ], 1, 0) OVER (ORDER BY [Transaction Date]) AS DifferenceFromPreviousTransaction
   FROM [Kaptagat Springs Sales Data].[dbo].['Kaptagat Springs Sales Datasets$']
