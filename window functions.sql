@@ -1,3 +1,8 @@
+-- select all data set --
+  SELECT *
+
+  FROM [Kaptagat Springs Sales Data].[dbo].['Kaptagat Springs Sales Datasets$']
+
 -- This can show how the total sales amount accumulates over time --
 SELECT TOP (1000) [Order Numer]
       ,[Quantity]
