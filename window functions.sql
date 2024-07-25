@@ -59,3 +59,21 @@ FROM [Kaptagat Springs Sales Data].[dbo].['Kaptagat Springs Sales Datasets$'];
    NTILE(4) OVER (PARTITION BY [Customer ID] ORDER BY  [ Total Amount ]DESC) AS QuartileByCustomer
 FROM [Kaptagat Springs Sales Data].[dbo].['Kaptagat Springs Sales Datasets$'];
 
+
+--- Get the previous and next transaction amounts for each customer. ---
+  SELECT TOP (1000) 
+    [Order Numer],
+    [Quantity],
+    [ Unit Price ],
+    [ Total Amount ],
+    [Transaction Date],
+    [Shipping Status],
+    [Year of Transaction],
+    [Product Type],
+    [Product Code],
+    [Customer Name],
+    [Customer ID],
+    [Transaction ID],
+ LAG([ Total Amount ], 1, 0) OVER (PARTITION BY [Customer ID] ORDER BY [Transaction Date]) AS PreviousTransactionAmount,
+    LEAD([ Total Amount ], 1, 0) OVER (PARTITION BY [Customer ID] ORDER BY [Transaction Date]) AS NextTransactionAmount
+FROM [Kaptagat Springs Sales Data].[dbo].['Kaptagat Springs Sales Datasets$'];
